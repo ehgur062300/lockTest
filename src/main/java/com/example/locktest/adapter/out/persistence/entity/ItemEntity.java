@@ -1,5 +1,6 @@
 package com.example.locktest.adapter.out.persistence.entity;
 
+import com.example.locktest.domain.model.Item;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,11 +27,19 @@ public class ItemEntity {
     private LocalDateTime creatAt;
 
     @Builder
-    public ItemEntity(Long id, String name, Long amount, LocalDateTime creatAt) {
-        this.id = id;
+    public ItemEntity(String name, Long amount, LocalDateTime creatAt) {
         this.name = name;
         this.amount = amount;
         this.creatAt = creatAt;
+    }
+
+    public void update(Item item) {
+        this.name = item.getName();
+        this.amount = item.getAmount();
+    }
+
+    public Item toDomain() {
+        return new Item(id, name, amount, creatAt);
     }
 }
 

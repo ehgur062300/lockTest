@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    url: jdbc:mysql://localhost:3306/lockTest?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: create
+
+  redis:
+    data:
+      host: localhost
+      port: 6379
+
+  redisson:
+    single-server-config:
+      address: redis://localhost:6379

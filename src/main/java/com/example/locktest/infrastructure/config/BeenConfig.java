@@ -3,8 +3,13 @@ package com.example.locktest.infrastructure.config;
 import com.example.locktest.adapter.out.persistence.JpaItemRepository;
 import com.example.locktest.adapter.out.persistence.SpringDataItemRepository;
 import com.example.locktest.application.port.in.CreateItemUseCase;
+import com.example.locktest.application.port.in.DecreaseItemUseCase;
+import com.example.locktest.application.port.in.UpdateItemUseCase;
+import com.example.locktest.application.port.out.ItemLockPort;
 import com.example.locktest.application.port.out.ItemRepository;
 import com.example.locktest.application.service.CreateItemService;
+import com.example.locktest.application.service.DecreaseItemService;
+import com.example.locktest.application.service.UpdateItemService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,5 +24,15 @@ public class BeenConfig {
     @Bean
     public CreateItemUseCase createItemUseCase(ItemRepository itemRepository) {
         return new CreateItemService(itemRepository);
+    }
+
+    @Bean
+    public UpdateItemUseCase updateItemUseCase(ItemRepository itemRepository) {
+        return new UpdateItemService(itemRepository);
+    }
+
+    @Bean
+    public DecreaseItemUseCase decreaseItemUseCase(ItemRepository itemRepository, ItemLockPort lockPort) {
+        return new DecreaseItemService(itemRepository, lockPort);
     }
 }
