@@ -23,6 +23,9 @@ public class ItemEntity {
     @Column(nullable = false)
     private Long amount;
 
+    @Version
+    private Long version; // OptimisticLock 을 위해 사용
+
     @Column(nullable = false)
     private LocalDateTime creatAt;
 

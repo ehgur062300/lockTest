@@ -5,6 +5,7 @@ import com.example.locktest.application.port.in.DecreaseItemUseCase;
 import com.example.locktest.application.port.out.ItemLockPort;
 import com.example.locktest.application.port.out.ItemRepository;
 import com.example.locktest.domain.model.Item;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DecreaseItemService implements DecreaseItemUseCase {
 
@@ -17,13 +18,14 @@ public class DecreaseItemService implements DecreaseItemUseCase {
     }
 
     @Override
+    @Transactional
     public Long decreaseItem(DecreaseItemCommand command) {
         itemLockPort.lock(command.id());
         try {
             Item item = itemRepository.findById(command.id())
                     .orElseThrow(() -> new RuntimeException("해당 상품을 찾을 수 없습니다."));
-            item.decrease(command.quantity());
-            return itemRepository.save(item);
+            Item updateItem = item.decrease(command.quantity());
+            return itemRepository.update(updateItem);
         } finally {
             itemLockPort.unlock(command.id());
         }

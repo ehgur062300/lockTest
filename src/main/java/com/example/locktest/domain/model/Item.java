@@ -25,9 +25,10 @@ public class Item {
         this.amount = amount;
     }
 
-    public void decrease(Long quantity) {
+    public Item decrease(Long quantity) {
         if (amount < quantity) throw new IllegalArgumentException("재고 수량이 부족합니다.");
         if (quantity < 1) throw new IllegalArgumentException("요청 값의 크기는 0보다 커야합니다.");
+        return new Item(this.id, this.name, this.amount - quantity, this.createAt);
     }
 
     public Long getId() { return id; }

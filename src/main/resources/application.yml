@@ -12,9 +12,9 @@ spring:
 
   redis:
     data:
-      host: localhost
+      host: host.docker.internal
       port: 6379
 
   redisson:
     single-server-config:
-      address: redis://localhost:6379
+      address: redis://host.docker.internal:6379

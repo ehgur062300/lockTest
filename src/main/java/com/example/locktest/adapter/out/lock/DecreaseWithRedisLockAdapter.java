@@ -3,16 +3,14 @@ package com.example.locktest.adapter.out.lock;
 import com.example.locktest.application.port.out.ItemLockPort;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
-@Component
-public class RedisLock implements ItemLockPort {
+public class DecreaseWithRedisLockAdapter implements ItemLockPort {
 
     private final RedissonClient redissonClient;
 
-    public RedisLock(RedissonClient redissonClient) {
+    public DecreaseWithRedisLockAdapter(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }
 
@@ -20,8 +18,10 @@ public class RedisLock implements ItemLockPort {
     public void lock(Long itemId) {
         RLock lock = redissonClient.getLock("item_lock_" + itemId);
         try {
+            System.out.println(Thread.currentThread().getName() + " - try to lock: " + itemId);
             lock.lock(5, TimeUnit.SECONDS);
-        } catch(Exception e) {
+            System.out.println(Thread.currentThread().getName() + " - lock acquired: " + itemId);
+        } catch (Exception e) {
             throw new IllegalStateException("lock fail", e);
         }
     }
@@ -31,6 +31,8 @@ public class RedisLock implements ItemLockPort {
         RLock lock = redissonClient.getLock("item_lock_" + itemId);
         if (lock.isHeldByCurrentThread()) {
             lock.unlock();
+            System.out.println(Thread.currentThread().getName() + " - unlock: " + itemId);
         }
     }
+
 }
