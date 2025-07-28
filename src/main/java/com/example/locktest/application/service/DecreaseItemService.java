@@ -5,7 +5,6 @@ import com.example.locktest.application.port.in.DecreaseItemUseCase;
 import com.example.locktest.application.port.out.ItemLockPort;
 import com.example.locktest.application.port.out.ItemRepository;
 import com.example.locktest.domain.model.Item;
-import org.springframework.transaction.annotation.Transactional;
 
 public class DecreaseItemService implements DecreaseItemUseCase {
 
@@ -18,7 +17,6 @@ public class DecreaseItemService implements DecreaseItemUseCase {
     }
 
     @Override
-    @Transactional
     public Long decreaseItem(DecreaseItemCommand command) {
         itemLockPort.lock(command.id());
         try {

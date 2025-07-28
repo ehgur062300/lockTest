@@ -35,8 +35,7 @@ public class JpaItemRepository implements ItemRepository {
                 () -> new RuntimeException("Item not found")
         );
         entity.update(newItem);
-        ItemEntity saved = springDataItemRepository.save(entity);
-        return saved.getId();
+        return entity.getId();
     }
 
     @Transactional(readOnly = true)
